@@ -222,10 +222,9 @@
       <p><strong>Хочешь получить мой честный и полезный разбор твоего Reels?</strong><br>
       Вставь ссылку ниже и нажми кнопку. После оплаты я лично пришлю тебе разбор с советами.</p>
       <input type="url" id="reelsLink" placeholder="Вставь ссылку на Reels" style="margin-bottom: 1rem;">
-      <a id="analyzeButton" href="#" target="_blank">
-        <button onclick="updateAnalyzeLink()">Получить разбор</button>
-      </a>
+      <button id="analyzeButton" onclick="updateAnalyzeLink()">Получить разбор</button>
     </div>
+
     <p style="font-size: 0.75rem; color: var(--footer-color); margin-top: 2rem; text-align: center; font-style: italic;">
       Это приложение делает вычисления на основе усредненных параметров нормы, что дает примерное представление об успешности разных метрик и рилса в целом. Но не является точным инструментом, так как аудитория каждого уникального профиля отличается по своей органике и активности. Приятного анализирования!
     </p>
@@ -371,16 +370,17 @@
       document.body.classList.toggle("dark");
     }
 
-    function generateCode() {
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      let result = "AR_";
-      for (let i = 0; i < 12; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    function extractShortcode(url) {
+      try {
+        const match = url.match(/instagram\.com\/reel\/([^/?#]+)/);
+        return match ? match[1] : null;
+      } catch {
+        return null;
       }
-      return result;
     }
 
-    async function updateAnalyzeLink() {
+    function updateAnalyzeLink() {
+      const tg = window.Telegram?.WebApp;
       const linkInput = document.getElementById("reelsLink");
       const userLink = linkInput.value.trim();
 
@@ -389,21 +389,25 @@
         return;
       }
 
-      const code = generateCode();
+      const shortcode = extractShortcode(userLink);
+      if (!shortcode) {
+        alert("Не удалось извлечь shortcode из ссылки");
+        return;
+      }
 
-      const formData = new URLSearchParams();
-      formData.append('link', userLink);
-      formData.append('code', code);
-
-      fetch("http://85.198.81.157:8000/store_link", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString()
-      }).catch(() => {});
-
+      const code = `AR_${shortcode}`;
       const tgLink = `https://t.me/Ilioshots_bot?start=${code}`;
-      document.getElementById("analyzeButton").href = tgLink;
+
+      if (tg) {
+        tg.close();
+        setTimeout(() => {
+          window.location.href = tgLink;
+        }, 300);
+      } else {
+        window.open(tgLink, "_blank");
+      }
     }
+
 
     function evaluateReels() {
       const isDark = document.body.classList.contains('dark');
@@ -582,6 +586,7 @@
           window.open("https://t.me/Ilioshots_bot?start=consultation", "_blank");
         }
       };
+      
     }
 
     window.addEventListener('DOMContentLoaded', () => {
