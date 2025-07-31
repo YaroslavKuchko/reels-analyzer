@@ -580,12 +580,15 @@
       const tg = window.Telegram?.WebApp;
 
       document.getElementById('consultationBtn').onclick = () => {
+        const tgLink = "https://t.me/Ilioshots_bot?start=consultation";
+
         if (tg) {
-          tg.close(); 
+          window.location.href = tgLink;
         } else {
-          window.open("https://t.me/Ilioshots_bot?start=consultation", "_blank");
+          window.open(tgLink, "_blank");
         }
       };
+
       
     }
 
