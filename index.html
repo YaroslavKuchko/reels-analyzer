@@ -572,6 +572,16 @@
       }
 
       document.getElementById('results').innerHTML = resultsHtml;
+
+      const tg = window.Telegram?.WebApp;
+
+      document.getElementById('consultationBtn').onclick = () => {
+        if (tg) {
+          tg.close(); 
+        } else {
+          window.open("https://t.me/Ilioshots_bot?start=consultation", "_blank");
+        }
+      };
     }
 
     window.addEventListener('DOMContentLoaded', () => {
