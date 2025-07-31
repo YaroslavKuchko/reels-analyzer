@@ -226,6 +226,9 @@
         <button onclick="updateAnalyzeLink()">Получить разбор</button>
       </a>
     </div>
+    <p style="font-size: 0.75rem; color: var(--footer-color); margin-top: 2rem; text-align: center; font-style: italic;">
+      Это приложение делает вычисления на основе усредненных параметров нормы, что дает примерное представление об успешности разных метрик и рилса в целом. Но не является точным инструментом, так как аудитория каждого уникального профиля отличается по своей органике и активности. Приятного анализирования!
+    </p>
   </div>
 
   <style>
@@ -277,9 +280,8 @@
       </a>
     </p>
     <p>
-      Разработал @ku_yaroslav
-      <a href="https://t.me/ku_yaroslav" target="_blank" style="text-decoration: none; margin-left: 8px;">
-      связаться в Telegram
+      <a href="https://t.me/BotsByKuYaroslav/2" target="_blank" style="text-decoration: none; margin-left: 8px;">
+      Разработал @ku_yaroslav связаться в Telegram
         <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 240 240" style="vertical-align: middle; margin-left: 4px;">
           <circle cx="120" cy="120" r="120" fill="#0088cc"/>
           <path d="M178 73L152 180c-2 8-6 10-13 6l-37-27-18 18c-2 2-4 3-7 3l3-41 74-67c3-3-1-5-5-3l-91 57-39-12c-8-2-8-8 2-12l152-59c7-2 13 2 11 12z" fill="#fff"/>
@@ -393,7 +395,7 @@
       formData.append('link', userLink);
       formData.append('code', code);
 
-      fetch("https://85.198.81.157:8000/store_link", {
+      fetch("http://85.198.81.157:8000/store_link", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString()
@@ -571,6 +573,13 @@
 
       document.getElementById('results').innerHTML = resultsHtml;
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const checkbox = document.getElementById("themeCheckbox");
+      document.body.classList.add("dark");
+      checkbox.checked = true;
+    });
   </script>
+
 </body>
 </html>
