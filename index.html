@@ -472,18 +472,35 @@
     function evaluateReels() {
       const isDark = document.body.classList.contains('dark');
 
-      const reach = parseFloat(document.getElementById('reach').value);
-      const views = parseFloat(document.getElementById('views').value);
-      const likes = parseFloat(document.getElementById('likes').value);
-      const comments = parseFloat(document.getElementById('comments').value);
-      const shares = parseFloat(document.getElementById('shares').value);
-      const saves = parseFloat(document.getElementById('saves').value);
-      const subs = parseFloat(document.getElementById('subs').value);
+      function parseOrZeroInt(val) {
+        const num = parseFloat(val);
+        if (isNaN(num) || num < 0 || !Number.isInteger(num)) {
+          return null; 
+        }
+        return num;
+      }
 
-      if (!reach || reach <= 0) {
-        alert('Введите корректное значение охватов');
+      const reachValue = document.getElementById('reach').value;
+      const reach = parseOrZeroInt(reachValue);
+
+      if (reach === null || reach <= 0) {
+        alert('Введите корректное целое положительное значение охватов');
         return;
       }
+
+      const views = parseOrZeroInt(document.getElementById('views').value);
+      const likes = parseOrZeroInt(document.getElementById('likes').value);
+      const comments = parseOrZeroInt(document.getElementById('comments').value);
+      const shares = parseOrZeroInt(document.getElementById('shares').value);
+      const saves = parseOrZeroInt(document.getElementById('saves').value);
+      const subs = parseOrZeroInt(document.getElementById('subs').value);
+
+      if ([views, likes, comments, shares, saves, subs].some(v => v === null)) {
+        alert('Пожалуйста, вводите только целые неотрицательные числа');
+        return;
+      }
+
+
 
       const viewsRatio = views / reach;
       const likesRatio = (likes / reach) * 100;
