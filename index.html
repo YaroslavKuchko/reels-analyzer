@@ -190,15 +190,24 @@
   }
 
   .how-to-use {
+    position: relative;
     background: var(--button-bg);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: bold;
     cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: currentColor;
-    text-underline-offset: 3px; 
     transition: opacity 0.3s;
+  }
+
+  .how-to-use::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--button-bg); /* переливное подчеркивание */
+    border-radius: 1px;
   }
 
 
