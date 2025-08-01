@@ -177,32 +177,83 @@
         padding: 0.6rem;
       }
     }
+
+    .theme-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .how-to-use-wrapper {
+    position: relative;
+  }
+
+  .how-to-use {
+    background: var(--button-bg);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-underline-offset: 3px; 
+    transition: opacity 0.3s;
+  }
+
+
+  .tooltip {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 0;
+    width: 320px;
+    background: var(--container-bg);
+    color: var(--text-color);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    padding: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    z-index: 100;
+    transition: opacity 0.3s ease;
+  }
+
+  .how-to-use-wrapper:hover .tooltip,
+  .how-to-use-wrapper:focus-within .tooltip {
+    display: block;
+  }
+
   </style>
 </head>
 <body>
   <div class="theme-toggle">
+    <div class="how-to-use-wrapper">
+      <span class="how-to-use" tabindex="0">КАК ПОЛЬЗОВАТЬСЯ?</span>
+      <div class="tooltip">
+        <strong>Инструкция:</strong><br>
+        Возьмите цифры из статистики вашего Reels в Instagram и внесите их в поля.<br><br>
+        <u>Охваты</u> = «Охваченные аккаунты» (в статистике под рилсом).<br><br>
+        Остальные метрики — просмотры, лайки, комментарии, репосты, сохранения, подписки — берите там же.
+      </div>
+    </div>
     <label class="toggle-switch">
       <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
       <span class="slider"></span>
     </label>
   </div>
 
+
   <div class="container">
     <h1>Оценка Reels</h1>
-    <!-- <label>Охваты: <input type="number" id="reach" required></label>
-    <label>Просмотры: <input type="number" id="views"></label>
-    <label>Лайки: <input type="number" id="likes"></label>
-    <label>Комментарии: <input type="number" id="comments"></label>
-    <label>Репосты: <input type="number" id="shares"></label>
-    <label>Сохранения: <input type="number" id="saves"></label>
-    <label>Подписки: <input type="number" id="subs"></label> -->
-    <label>Охваты: <input type="number" id="reach" value="0" required></label>
-    <label>Просмотры: <input type="number" id="views" value="0"></label>
-    <label>Лайки: <input type="number" id="likes" value="0"></label>
-    <label>Комментарии: <input type="number" id="comments" value="0"></label>
-    <label>Репосты: <input type="number" id="shares" value="0"></label>
-    <label>Сохранения: <input type="number" id="saves" value="0"></label>
-    <label>Подписки: <input type="number" id="subs" value="0"></label>
+    <label>Охваты: <input type="number" id="reach" placeholder="0" required></label>
+    <label>Просмотры: <input type="number" id="views" placeholder="0"></label>
+    <label>Лайки: <input type="number" id="likes" placeholder="0"></label>
+    <label>Комментарии: <input type="number" id="comments" placeholder="0"></label>
+    <label>Репосты: <input type="number" id="shares" placeholder="0"></label>
+    <label>Сохранения: <input type="number" id="saves" placeholder="0"></label>
+    <label>Подписки: <input type="number" id="subs" placeholder="0"></label>
+
 
     <button onclick="evaluateReels()">Оценить</button>
 
@@ -292,7 +343,7 @@
 
 
 
-  <script>
+  <script src="https://telegram.org/js/telegram-web-app.js">
     const advicesByCategory = {
       "Просмотры": [
         "Просмотры ниже нормы - попробуйте другой хук или обложку. Первый кадр решает всё: если не зацепили в первые 1-2 секунды, зритель уходит.",
@@ -312,7 +363,7 @@
       ],
       "Комментарии": [
         "Комментарии слабые - добавь провокационный вопрос или эмоцию.",
-        "Почти мало - задай в конце ролика вопрос или оставь тему открытой.",
+        "Комментариев мало - задай в конце ролика вопрос или оставь тему открытой.",
         "Комментарии не идут - возможно, ролик не вызывает мнений. Добавь момент для обсуждения.",
         "Мало обратной связи - вставь провокацию или напрямую спроси мнение.",
         "Нет обсуждений - добавь что-то спорное или неоднозначное.",
@@ -396,7 +447,7 @@
       }
 
       const code = `AR_${shortcode}`;
-      const tgLink = `https://t.me/Ilioshots_bot?start=${code}`;
+      const tgLink = `t.me/Ilioshots_bot?start=${code}`;
 
       if (tg) {
         tg.close();
@@ -540,7 +591,7 @@
         backgroundColor = isDark ? '#a77c1c' : '#fff3cd';
       } else if (finalScorePercent >= 40) {
         scoreText = '🥱 Слабый';
-        backgroundColor = isDark ? '#b56b17' : '#ffe5b4';
+        backgroundColor = isDark ? '#d04040' : '#ffd1cc';
       } else {
         scoreText = '🚨 Не зашёл';
         backgroundColor = isDark ? '#842029' : '#f8d7da';
@@ -582,14 +633,13 @@
       document.getElementById('consultationBtn').onclick = () => {
         const tgLink = "https://t.me/Ilioshots_bot?start=consultation";
 
-        if (tg) {
-          window.location.href = tgLink;
+        if (window.Telegram && Telegram.WebApp) {
+          Telegram.WebApp.openTelegramLink(tgLink);
+          Telegram.WebApp.close();
         } else {
           window.open(tgLink, "_blank");
         }
       };
-
-      
     }
 
     window.addEventListener('DOMContentLoaded', () => {
