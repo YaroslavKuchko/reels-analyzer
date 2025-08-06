@@ -449,7 +449,7 @@
 
     function openConsultation() {
       const tg = window.Telegram?.WebApp;
-      const tgLink = "https://t.me/Ilioshots_bot?start=consultation";
+      const tgLink = "t.me/Ilioshots_bot?start=consultation";
       const tgProtocolLink = "tg://resolve?domain=Ilioshots_bot&start=consultation";
 
       if (tg) {
@@ -493,7 +493,7 @@
       }
 
       const code = `AR_${shortcode}`;
-      const tgLink = `https://t.me/Ilioshots_bot?start=${code}`;
+      const tgLink = `t.me/Ilioshots_bot?start=${code}`;
       const tgProtocolLink = `tg://resolve?domain=Ilioshots_bot&start=${code}`;
 
       if (tg) {
