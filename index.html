@@ -450,17 +450,26 @@
     function openConsultation() {
       const tg = window.Telegram?.WebApp;
       const tgLink = "https://t.me/Ilioshots_bot?start=consultation";
+      const tgProtocolLink = "tg://resolve?domain=Ilioshots_bot&start=consultation";
 
-      if (tg && tg.isVersionAtLeast('6.1')) {
-        // Используем новый метод для iOS
-        tg.openTelegramLink(tgLink);
+      if (tg) {
+        // Сначала закрываем Mini App
         tg.close();
-      } else if (tg) {
-        // Fallback для старых версий
-        tg.close();
+        // Затем открываем ссылку с небольшой задержкой
         setTimeout(() => {
-          window.location.href = tgLink;
-        }, 300);
+          try {
+            // Пробуем разные способы открытия ссылки
+            if (tg.openTelegramLink) {
+              tg.openTelegramLink(tgLink);
+            } else {
+              // Пробуем tg:// протокол для iOS
+              window.location.href = tgProtocolLink;
+            }
+          } catch (e) {
+            // Fallback на обычную ссылку
+            window.location.href = tgLink;
+          }
+        }, 200);
       } else {
         // Для обычного браузера
         window.open(tgLink, "_blank");
@@ -485,17 +494,26 @@
 
       const code = `AR_${shortcode}`;
       const tgLink = `https://t.me/Ilioshots_bot?start=${code}`;
+      const tgProtocolLink = `tg://resolve?domain=Ilioshots_bot&start=${code}`;
 
-      if (tg && tg.isVersionAtLeast('6.1')) {
-        // Используем новый метод для iOS
-        tg.openTelegramLink(tgLink);
+      if (tg) {
+        // Сначала закрываем Mini App
         tg.close();
-      } else if (tg) {
-        // Fallback для старых версий
-        tg.close();
+        // Затем открываем ссылку с небольшой задержкой
         setTimeout(() => {
-          window.location.href = tgLink;
-        }, 300);
+          try {
+            // Пробуем разные способы открытия ссылки
+            if (tg.openTelegramLink) {
+              tg.openTelegramLink(tgLink);
+            } else {
+              // Пробуем tg:// протокол для iOS
+              window.location.href = tgProtocolLink;
+            }
+          } catch (e) {
+            // Fallback на обычную ссылку
+            window.location.href = tgLink;
+          }
+        }, 200);
       } else {
         // Для обычного браузера
         window.open(tgLink, "_blank");
