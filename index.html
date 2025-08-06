@@ -282,9 +282,7 @@
     <div class="advice">
       <p><strong>Сложно придумать, что снимать?</strong><br>
       Хочешь научиться делать ролики, от которых не отвести глаз? Запишись на консультацию — научу писать сценарии, цеплять зрителя и строить контент как кино.</p>
-      <a href="https://t.me/Ilioshots_bot?start=consultation" target="_blank">
-        <button>Записаться на консультацию</button>
-      </a>
+      <button onclick="openConsultation()">Записаться на консультацию</button>
     </div>
 
     <!-- Получить разбор -->
@@ -449,6 +447,26 @@
       }
     }
 
+    function openConsultation() {
+      const tg = window.Telegram?.WebApp;
+      const tgLink = "https://t.me/Ilioshots_bot?start=consultation";
+
+      if (tg && tg.isVersionAtLeast('6.1')) {
+        // Используем новый метод для iOS
+        tg.openTelegramLink(tgLink);
+        tg.close();
+      } else if (tg) {
+        // Fallback для старых версий
+        tg.close();
+        setTimeout(() => {
+          window.location.href = tgLink;
+        }, 300);
+      } else {
+        // Для обычного браузера
+        window.open(tgLink, "_blank");
+      }
+    }
+
     function updateAnalyzeLink() {
       const tg = window.Telegram?.WebApp;
       const linkInput = document.getElementById("reelsLink");
@@ -466,14 +484,20 @@
       }
 
       const code = `AR_${shortcode}`;
-      const tgLink = `t.me/Ilioshots_bot?start=${code}`;
+      const tgLink = `https://t.me/Ilioshots_bot?start=${code}`;
 
-      if (tg) {
+      if (tg && tg.isVersionAtLeast('6.1')) {
+        // Используем новый метод для iOS
+        tg.openTelegramLink(tgLink);
+        tg.close();
+      } else if (tg) {
+        // Fallback для старых версий
         tg.close();
         setTimeout(() => {
           window.location.href = tgLink;
         }, 300);
       } else {
+        // Для обычного браузера
         window.open(tgLink, "_blank");
       }
     }
@@ -665,17 +689,6 @@
       document.getElementById('results').innerHTML = resultsHtml;
 
       const tg = window.Telegram?.WebApp;
-
-      document.getElementById('consultationBtn').onclick = () => {
-        const tgLink = "https://t.me/Ilioshots_bot?start=consultation";
-
-        if (window.Telegram && Telegram.WebApp) {
-          Telegram.WebApp.openTelegramLink(tgLink);
-          Telegram.WebApp.close();
-        } else {
-          window.open(tgLink, "_blank");
-        }
-      };
     }
 
     window.addEventListener('DOMContentLoaded', () => {
